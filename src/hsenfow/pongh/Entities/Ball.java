@@ -7,6 +7,9 @@ import hsenfow.pongh.Utils;
 
 public class Ball extends Entity{
 	
+	// The name of the bounce sound file
+	public static final String BOUNCE_SOUND_FILE = "bounce.wav";
+	
 	// The default size of the ball
 	public static final int DEFAULT_WIDTH = 20;
 	public static final int DEFAULT_HEIGHT = 20;
@@ -52,12 +55,16 @@ public class Ball extends Entity{
 			y -= (y + height) - gamePanelHeight;
 			// Reverse its direction
 			moveSpeedY *= -1;
+			// Play a bounce sound
+			Utils.playAudio(Utils.AUDIO_FOLDER + Ball.BOUNCE_SOUND_FILE);
 		}
 		else if(y < 0){
 			// Correct its position
 			y += (0 - y);
 			// Reverse its direction
 			moveSpeedY *= -1;
+			// Play a bounce sound
+			Utils.playAudio(Utils.AUDIO_FOLDER + Ball.BOUNCE_SOUND_FILE);
 		}
 		
 		// TODO Game over
@@ -104,6 +111,7 @@ public class Ball extends Entity{
 					if(moveSpeedY < 0) moveSpeedY *= -1;
 				}
 				
+				Utils.playAudio(Utils.AUDIO_FOLDER + Ball.BOUNCE_SOUND_FILE);
 				return true;
 			}
 			else if(moveSpeedY > 0 && y + height >= paddle.y
@@ -112,6 +120,8 @@ public class Ball extends Entity{
 				y = paddle.y - height;
 				// Reverse the ball's Y position
 				moveSpeedY *= -1;
+				
+				Utils.playAudio(Utils.AUDIO_FOLDER + Ball.BOUNCE_SOUND_FILE);
 				return true;
 			}
 			else if(moveSpeedY < 0 && y <= paddle.y + paddle.height
@@ -120,6 +130,8 @@ public class Ball extends Entity{
 				y = paddle.y + paddle.height;
 				// Reverse the ball's Y position
 				moveSpeedY *= -1;
+				
+				Utils.playAudio(Utils.AUDIO_FOLDER + Ball.BOUNCE_SOUND_FILE);
 				return true;
 			}
 		}

@@ -2,10 +2,18 @@ package hsenfow.pongh;
 
 import java.awt.Dimension;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 public final class Utils {
+	
+	// The resources folder location
+	public static final String RESOURCES_FOLDER = "/resources/";
+	// The audio folder location
+	public static final String AUDIO_FOLDER = RESOURCES_FOLDER + "Audio/";
 	
 	// The screen size
 	public static Dimension screenSize;
@@ -43,6 +51,26 @@ public final class Utils {
 		}
 		Utils.log(lookAndFeel + " look and feel not found");
 		return false;
+	}
+	
+	/**
+	 * Plays some audio.
+	 * @param filePath The file path of the audio to play
+	 */
+	public static void playAudio(String filePath){
+		try{
+			// Open an input stream for the audio file
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(Utils.class.getResourceAsStream(filePath));
+			
+			// Get a clip
+			Clip clip = AudioSystem.getClip();
+			
+			// Open the audio and play it
+			clip.open(inputStream);
+			clip.start();
+		} catch(Exception e){
+			Utils.log("Error playing audio: " + filePath + " - " + e.toString());
+		}
 	}
 	
 }

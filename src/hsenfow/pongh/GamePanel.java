@@ -213,8 +213,14 @@ public class GamePanel extends JPanel{
 		// Render the ball
 		ball.render(graphics);
 		
+		// Render the middle line
+		int middleX = getWidth() / 2;
+		graphics.setColor(Color.DARK_GRAY);
+		graphics.drawLine(middleX, 0, middleX, getHeight());
+		
 		// If we're creating a message, then display it
 		if(gameKeyListener.creatingMessage){
+			graphics.setColor(Color.GREEN);
 			graphics.drawString("Message: " + gameKeyListener.currentMessage, 10, 32);
 		}
 	}
