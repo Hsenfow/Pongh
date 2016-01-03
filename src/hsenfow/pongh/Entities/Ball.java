@@ -1,6 +1,7 @@
 package hsenfow.pongh.Entities;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import hsenfow.pongh.Utils;
 
@@ -45,7 +46,7 @@ public class Ball extends Entity{
 		x += moveSpeedX;
 		
 		// Make the ball bounce (reverse direction) when it reaches the top or bottom of the window
-		int gamePanelHeight = Utils.mainFrame.getGamePanelHeight();
+		int gamePanelHeight = Utils.mainFrame.gamePanel.getHeight();
 		if(y + height > gamePanelHeight){
 			// Correct its position
 			y -= (y + height) - gamePanelHeight;
@@ -58,6 +59,15 @@ public class Ball extends Entity{
 			// Reverse its direction
 			moveSpeedY *= -1;
 		}
+		
+		// TODO Game over
+		// For the time being, just reposition the ball back into the centre of the screen
+		if(x < 0 || x > Utils.mainFrame.gamePanel.getWidth()){
+			x = Utils.mainFrame.gamePanel.getWidth() / 2;
+			y = Utils.mainFrame.gamePanel.getHeight() / 2;
+			moveSpeedX *= -1;
+			moveSpeedY *= -1;
+		}
 	}
 	
 	/**
@@ -67,6 +77,8 @@ public class Ball extends Entity{
 	 * @return Whether or not the ball was colliding with the paddle
 	 */
 	public boolean checkPaddleCollision(Paddle paddle){
+		// TODO There are some small problems with this
+		
 		// Check whether the ball has collided with the paddle horizontally in some way
 		if((x + width >= paddle.x && x + width <= paddle.x + paddle.width)
 				|| (x >= paddle.x && x <= paddle.x + paddle.width)){
@@ -118,10 +130,10 @@ public class Ball extends Entity{
 	/**
 	 * Overridden so that the ball can be a circle.
 	 */
-//	@Override
-//	public void render(Graphics graphics){
-//		setColour(colour);
-//		graphics.fillOval(x, y, width, height);
-//	}
+	@Override
+	public void render(Graphics graphics){
+		setColour(colour);
+		graphics.fillOval(x, y, width, height);
+	}
 	
 }

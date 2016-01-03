@@ -12,13 +12,17 @@ import hsenfow.pongh.Network.NetworkUtils;
 
 public class ServerThread extends NetworkThread{
 	
+	// The default port to use
+	// TODO Allow the user to specify the port to use in the options
+	public static final int DEFAULT_PORT = 51004;
+	
 	/**
 	 * Creates the server thread ready to accept a client connection.
 	 * @throws IOException Thrown if the server socket could not be opened
 	 */
 	public ServerThread() throws IOException{
 		// Create the server socket
-		NetworkUtils.serverSocket = new ServerSocket(0);
+		NetworkUtils.serverSocket = new ServerSocket(DEFAULT_PORT);
 	}
 	
 	/**

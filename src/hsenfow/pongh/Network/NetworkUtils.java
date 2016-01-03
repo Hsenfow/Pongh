@@ -44,6 +44,9 @@ public final class NetworkUtils {
 	// Whether or not we're connected to either a server (as a client) or a client (as a server)
 	public static volatile boolean connected = false;
 	
+	// Whether we're the server or not
+	public static boolean isServer = false;
+	
 	// The length of the client-server key (including the prefix)
 	public static final int CLIENT_SERVER_KEY_LENGTH = 32;
 	// The client-server key prefix
@@ -74,6 +77,9 @@ public final class NetworkUtils {
 	public static void closeSockets(){
 		// We're no longer connected
 		NetworkUtils.connected = false;
+		
+		// We may have been a server once, but we certainly aren't now
+		NetworkUtils.isServer = false;
 		
 		// Delete the client-server key
 		NetworkUtils.clientServerKey = null;
@@ -113,6 +119,9 @@ public final class NetworkUtils {
 			Utils.log("Error starting server thread: " + ioe.getMessage());
 			return;
 		}
+		
+		// We're a server
+		NetworkUtils.isServer = true;
 		
 		// Show the user that the server is waiting
 		NetworkUtils.showNetworkDialog("Awaiting connection",

@@ -29,6 +29,16 @@ public class Entity {
 	}
 	
 	/**
+	 * Sets the entity to the given position.
+	 * @param x The entity's new X coordinate
+	 * @param y The entity's new Y coordinate
+	 */
+	public void setPosition(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	/**
 	 * Used to get the X coordinate of the entity.
 	 * @return The entity's X coordinate
 	 */

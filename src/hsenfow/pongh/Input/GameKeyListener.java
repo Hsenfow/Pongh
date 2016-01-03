@@ -18,6 +18,13 @@ public class GameKeyListener implements KeyListener{
 	// The current key states
 	private HashMap<Integer, Boolean> keyStates;
 	
+	// The max message length
+	public static final int MAX_MESSAGE_LENGTH = 128;
+	// Whether a message is currently being created
+	public boolean creatingMessage = false;
+	// The current message being created
+	public String currentMessage;
+	
 	/**
 	 * Initialises all things required by the game key listener.
 	 */
@@ -43,6 +50,7 @@ public class GameKeyListener implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent event){
 		int keyCode = event.getKeyCode();
+		char keyChar = event.getKeyChar();
 		
 		// Handle the key press
 		if(keyCode == KeyEvent.VK_ESCAPE){
@@ -64,6 +72,38 @@ public class GameKeyListener implements KeyListener{
 			
 			// Un-pause the game
 			Utils.gamePaused = false;
+		}
+		else if(keyCode == KeyEvent.VK_ENTER && NetworkUtils.connected){
+			// We're already creating a message, so send it (if it's not empty)
+			if(creatingMessage){
+				creatingMessage = false;
+				
+				// Send the message if it's not empty
+				if(currentMessage.length() > 0){
+					// Send the message
+					NetworkCommunications.sendMessage(NetworkCommunications.MESSAGE_PLAYER_MESSAGE + currentMessage);
+					
+					// Set the message as the latest one by paddle one
+					Utils.mainFrame.gamePanel.paddleOne.setLatestMessage(currentMessage);
+				}
+			}
+			// Begin creating a message
+			else{
+				currentMessage = "";
+				creatingMessage = true;
+			}
+		}
+		
+		// If we're currently creating a message then update it for the current key press
+		if(creatingMessage){
+			// Add the key if it's one of the accepted ones
+			if(currentMessage.length() < MAX_MESSAGE_LENGTH && Character.toString(keyChar).matches("[A-Za-z0-9 !?'\",.]")){
+				currentMessage += keyChar;
+			}
+			// If backspace was pressed then remove the last character
+			else if(keyCode == KeyEvent.VK_BACK_SPACE && currentMessage.length() > 0){
+				currentMessage = currentMessage.substring(0, currentMessage.length() - 1);
+			}
 		}
 		
 		// Set the key as pressed

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 import hsenfow.pongh.Utils;
+import hsenfow.pongh.Network.NetworkCommunications.MessageResult;
 
 /**
  * This class exists as a base for the client and network threads. Its methods should be overridden as needed.
@@ -44,7 +45,10 @@ public abstract class NetworkThread extends Thread{
 			}
 		} catch(IOException ioe){
 			Utils.log("Error while processing messages: " + ioe.getMessage());
+			JOptionPane.showMessageDialog(Utils.mainFrame, "Unexpected disconnect");
 		}
+		
+		// TODO There are sometimes some problems when disconnecting. NPE when updating / whole window freezing.
 		
 		Utils.log("Disconnected");
 		
@@ -62,19 +66,24 @@ public abstract class NetworkThread extends Thread{
 	 */
 	public void getAndProcessMessage() throws IOException{
 		// Get and process the latest message received from the server
-		int result = NetworkCommunications.processMessage(NetworkUtils.socketReader.readLine());
+		MessageResult result = NetworkCommunications.processMessage(NetworkUtils.socketReader.readLine());
 		
 		// Handle the result
 		switch(result){
-		case NetworkCommunications.MESSAGE_RESULT_DISCONNECT:
-		case NetworkCommunications.MESSAGE_RESULT_NO_DATA:
-		case NetworkCommunications.MESSAGE_RESULT_NO_KEY:{
+		case REQUESTED_DC:
+		case NO_DATA:
+		case NO_KEY:
+		case UNKNOWN_MESSAGE:
+		case INVALID_MESSAGE:{
 			// Some sort of error occurred or a proper disconnect message was sent by the
 			// server, so inform the user
-			JOptionPane.showMessageDialog(Utils.mainFrame, "Disconnected. Reason: " + NetworkCommunications.getMessageResultString(result));
+			JOptionPane.showMessageDialog(Utils.mainFrame, "Disconnected. Reason: " + result.toString());
 			NetworkUtils.connected = false;
 			break;
 		}
+		default:
+			// Just continue as normal
+			break;
 		}
 	}
 	

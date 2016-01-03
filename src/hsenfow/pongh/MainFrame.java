@@ -23,7 +23,6 @@ public class MainFrame extends JFrame{
 	// The title of the window
 	public static final String WINDOW_TITLE = "Pongh";
 	// The default window size
-	// TODO Add the ability to resize the window without anything messing up
 	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
 	
 	// The title displayed on the main menu
@@ -209,24 +208,6 @@ public class MainFrame extends JFrame{
 			// Show the menu panel again
 			menuPanel.setVisible(true);
 		}
-	}
-	
-	/**
-	 * Used to get the game panel's width.
-	 * @return The width of the game panel
-	 */
-	public int getGamePanelWidth(){
-		if(gamePanel != null) return gamePanel.getWidth();
-		else return 0;
-	}
-	
-	/**
-	 * Used to get the game panel's height.
-	 * @return The height of the game panel
-	 */
-	public int getGamePanelHeight(){
-		if(gamePanel != null) return gamePanel.getHeight();
-		else return 0;
 	}
 	
 }
