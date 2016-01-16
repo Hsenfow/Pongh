@@ -36,7 +36,7 @@ public abstract class NetworkThread extends Thread{
 		NetworkUtils.closeNetworkDialog();
 		
 		// Show the game panel
-		Utils.mainFrame.showGamePanel();
+		Utils.mainFrame.toggleGamePanel();
 		
 		// Start a loop to keep processing all the data we receive
 		try{
@@ -53,7 +53,7 @@ public abstract class NetworkThread extends Thread{
 		Utils.log("Disconnected");
 		
 		// Destroy the game panel to go back to the main menu
-		Utils.mainFrame.destroyGamePanel();
+		Utils.mainFrame.toggleGamePanel();
 		
 		// Ensure all sockets are closed
 		NetworkUtils.closeSockets();

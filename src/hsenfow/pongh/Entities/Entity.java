@@ -75,6 +75,7 @@ public class Entity {
 	 * @param newColour The entity's new colour
 	 */
 	public void setColour(Color newColour){
+		if(newColour == null) newColour = Color.WHITE;
 		this.colour = newColour;
 	}
 	

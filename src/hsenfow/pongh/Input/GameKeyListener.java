@@ -61,7 +61,7 @@ public class GameKeyListener implements KeyListener{
 			int confirm = JOptionPane.showConfirmDialog(Utils.mainFrame, "Exit game?", "Exit", JOptionPane.YES_NO_OPTION);
 			if(confirm == JOptionPane.YES_OPTION){
 				// Destroy the game panel
-				Utils.mainFrame.destroyGamePanel();
+				Utils.mainFrame.toggleGamePanel();
 				
 				// Disconnect from multiplayer
 				if(NetworkUtils.connected){

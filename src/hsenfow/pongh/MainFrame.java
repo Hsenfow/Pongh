@@ -32,10 +32,13 @@ public class MainFrame extends JFrame{
 	private JPanel menuPanel;
 	
 	// The game JPanel
-	public GamePanel gamePanel;
+	public GamePanel gamePanel = null;
 	
 	// The multiplayer menu JPanel
-	private MultiplayerPanel multiplayerPanel;
+	private MultiplayerPanel multiplayerPanel = null;
+	
+	// The settings menu JPanel
+	private SettingsPanel settingsPanel;
 	
 	/**
 	 * The entry point for the program.
@@ -53,6 +56,9 @@ public class MainFrame extends JFrame{
 		
 		// Get the screen size
 		Utils.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		// Load the settings before doing anything else
+		Settings.loadSettings();
 		
 		// Set up the window
 		setupWindow();
@@ -112,7 +118,7 @@ public class MainFrame extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent event){
 				// Show the game panel
-				showGamePanel();
+				toggleGamePanel();
 			}
 		});
 		// Create the 'Multiplayer' button
@@ -124,13 +130,13 @@ public class MainFrame extends JFrame{
 				toggleMultiplayerMenu();
 			}
 		});
-		// Create the 'Options' button
-		JButton optionsButton = new JButton("Options");
-		optionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		optionsButton.addActionListener(new ActionListener(){
+		// Create the 'Settings' button
+		JButton settingsButton = new JButton("Settings");
+		settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		settingsButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				JOptionPane.showMessageDialog(Utils.mainFrame, "Not yet implemented");
+				toggleSettingsMenu();
 			}
 		});
 		// Create the 'Exit' button
@@ -153,9 +159,33 @@ public class MainFrame extends JFrame{
 		menuBox.add(Box.createVerticalStrut(20));
 		menuBox.add(multiplayerButton);
 		menuBox.add(Box.createVerticalStrut(20));
-		menuBox.add(optionsButton);
+		menuBox.add(settingsButton);
 		menuBox.add(Box.createVerticalStrut(50));
 		menuBox.add(exitButton);
+	}
+	
+	/**
+	 * Sets the JPanel to use, while hiding the menu panel.
+	 * @param newPanel The new JPanel to use
+	 */
+	private void setPanel(JPanel newPanel){
+		// Add the new panel
+		add(newPanel);
+		
+		// Hide the menu panel
+		menuPanel.setVisible(false);
+	}
+	
+	/**
+	 * Makes the menu panel visible again and removes the given JPanel (if one is given).
+	 * @param currentPanel The current JPanel, which should be removed from the frame
+	 */
+	private void useMenuPanel(JPanel currentPanel){
+		// If a current panel was given, then remove it
+		if(currentPanel != null) remove(currentPanel);
+		
+		// Make the menu panel visible again
+		menuPanel.setVisible(true);
 	}
 	
 	/**
@@ -165,48 +195,50 @@ public class MainFrame extends JFrame{
 		// If the multiplayer panel doesn't exist, then create and show it
 		if(multiplayerPanel == null){
 			multiplayerPanel = new MultiplayerPanel();
-			add(multiplayerPanel);
-			
-			// Hide the menu panel
-			menuPanel.setVisible(false);
+			setPanel(multiplayerPanel);
 		}
+		// Otherwise remove it
 		else{
-			// Remove and delete the multiplayer panel
-			remove(multiplayerPanel);
+			useMenuPanel(multiplayerPanel);
 			multiplayerPanel = null;
-			
-			// Show the menu panel
-			menuPanel.setVisible(true);
 		}
 	}
 	
 	/**
-	 * Shows the game panel.
+	 * Toggles between the main menu and the settings screen.
 	 */
-	public void showGamePanel(){
-		// Don't create the game panel again if it already exists
+	public void toggleSettingsMenu(){
+		// Show the panel if it doesn't yet exist
+		if(settingsPanel == null){
+			settingsPanel = new SettingsPanel();
+			setPanel(settingsPanel);
+		}
+		// Otherwise remove and delete the settings panel
+		else{
+			useMenuPanel(settingsPanel);
+			settingsPanel = null;
+		}
+	}
+	
+	/**
+	 * Toggles between the game panel and the menu panel.
+	 */
+	public void toggleGamePanel(){
+		// Show the game panel if it doesn't yet exist
 		if(gamePanel == null){
 			gamePanel = new GamePanel();
-			add(gamePanel);
-			gamePanel.requestFocus();
+			setPanel(gamePanel);
 			
-			// Hide the menu panel
-			menuPanel.setVisible(false);
+			// Hide the multiplayer panel, as we may have come from that
 			if(multiplayerPanel != null) multiplayerPanel.setVisible(false);
-		}
-	}
-	
-	/**
-	 * Destroys the game panel.
-	 */
-	public void destroyGamePanel(){
-		if(gamePanel != null){
-			// Remove and delete the game panel
-			remove(gamePanel);
-			gamePanel = null;
 			
-			// Show the menu panel again
-			menuPanel.setVisible(true);
+			// Give the game panel focus
+			gamePanel.requestFocus();
+		}
+		// Otherwise remove and delete the game panel
+		else{
+			useMenuPanel(gamePanel);
+			gamePanel = null;
 		}
 	}
 	

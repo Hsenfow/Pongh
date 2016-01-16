@@ -12,6 +12,7 @@ import hsenfow.pongh.Entities.Paddle.Direction;
 import hsenfow.pongh.Input.GameKeyListener;
 import hsenfow.pongh.Network.NetworkCommunications;
 import hsenfow.pongh.Network.NetworkUtils;
+import hsenfow.pongh.Settings.Setting;
 
 public class GamePanel extends JPanel{
 	private static final long serialVersionUID = -5321059453993299436L;
@@ -58,6 +59,7 @@ public class GamePanel extends JPanel{
 	private void setupGame(){
 		// Create the two paddles
 		paddleOne = new Paddle(50, (getHeight() / 2) - (Paddle.DEFAULT_HEIGHT / 2));
+		paddleOne.setColour(Utils.getColourFromString(Settings.getSettingValue(Setting.PADDLE_1_COLOUR)));
 		paddleTwo = new Paddle(getWidth() - Paddle.DEFAULT_WIDTH - 50,
 				(getHeight() / 2) - (Paddle.DEFAULT_HEIGHT / 2));
 		

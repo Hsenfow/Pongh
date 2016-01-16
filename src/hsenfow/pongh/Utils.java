@@ -1,6 +1,8 @@
 package hsenfow.pongh;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.lang.reflect.Field;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -70,6 +72,27 @@ public final class Utils {
 			clip.start();
 		} catch(Exception e){
 			Utils.log("Error playing audio: " + filePath + " - " + e.toString());
+		}
+	}
+	
+	/**
+	 * Converts the given string into its matching colour. E.g, 'Yellow' -> Color.YELLOW
+	 * @param colour A string version of a colour
+	 * @return The colour object representing the given string or null if one wasn't found
+	 */
+	public static Color getColourFromString(String colourString){
+		// Make sure a valid string was given
+		if(colourString == null) return null;
+		
+		// Convert the string to uppercase so it matches the names of the colours
+		colourString = colourString.toUpperCase();
+		try{
+			// Try to find a matching colour
+			Field field = Class.forName("java.awt.Color").getField(colourString);
+			return (Color)field.get(null);
+		} catch(Exception e){
+			Utils.log("Invalid colour: " + colourString + " - " + e.getMessage());
+			return null;
 		}
 	}
 	
