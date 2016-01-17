@@ -22,16 +22,18 @@ public class Settings {
 	
 	// The available settings
 	public enum Setting{
-		PADDLE_1_COLOUR
+		PADDLE_1_COLOUR,
+		BALL_COLOUR
 	};
 	
 	// The possible colours of things
-	private static final String[] COLOURS = {"White", "Red", "Green", "Blue"};
+	private static final String[] COLOURS = {"White", "Red", "Green", "Blue", "Cyan", "Magenta", "Orange", "Pink", "Yellow"};
 	
 	// The information about each setting
 	public static final HashMap<Setting, SettingInfo> SETTINGS_INFO = new HashMap<>();
 	static{
 		SETTINGS_INFO.put(Setting.PADDLE_1_COLOUR, new SettingInfo("Paddle One Colour", SettingType.SELECT_BOX, COLOURS));
+		SETTINGS_INFO.put(Setting.BALL_COLOUR, new SettingInfo("Ball Colour", SettingType.SELECT_BOX, COLOURS));
 	}
 	
 	/**

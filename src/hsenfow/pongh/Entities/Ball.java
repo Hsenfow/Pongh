@@ -3,7 +3,9 @@ package hsenfow.pongh.Entities;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import hsenfow.pongh.Settings;
 import hsenfow.pongh.Utils;
+import hsenfow.pongh.Settings.Setting;
 
 public class Ball extends Entity{
 	
@@ -29,8 +31,11 @@ public class Ball extends Entity{
 	public Ball(int x, int y){
 		super(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		
-		// Default the ball's colour to white
-		setColour(Color.WHITE);
+		// Try to get the setting for the ball's colour
+		Color ballColour = Utils.getColourFromString(Settings.getSettingValue(Setting.BALL_COLOUR));
+		// Default the ball's colour to white if one hasn't been specified
+		if(ballColour == null) ballColour = Color.WHITE;
+		setColour(ballColour);
 	}
 	
 	/**
@@ -144,7 +149,7 @@ public class Ball extends Entity{
 	 */
 	@Override
 	public void render(Graphics graphics){
-		setColour(colour);
+		graphics.setColor(colour);
 		graphics.fillOval(x, y, width, height);
 	}
 	
