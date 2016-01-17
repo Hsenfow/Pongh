@@ -46,18 +46,9 @@ public class Settings {
 			// Each line is in the format: key=value
 			fileContent += entry.getKey() + "=" + entry.getValue().value + "\n";
 		}
-		
-		try(
-			// Open the settings file
-			PrintWriter writer = new PrintWriter(SETTINGS_FILE);
-		){
-			// Write the new file content
-			writer.write(fileContent);
-			// Close the file
-			writer.close();
-		} catch(IOException ioe){
-			Utils.log("Error saving settings: " + ioe.getMessage());
-		}
+
+		// Write the content to the file
+		Utils.writeFile(SETTINGS_FILE, fileContent);
 	}
 	
 	/**

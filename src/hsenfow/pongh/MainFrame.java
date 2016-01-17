@@ -59,6 +59,9 @@ public class MainFrame extends JFrame{
 		
 		// Load the settings before doing anything else
 		Settings.loadSettings();
+
+		// Create the player
+		Utils.player = Player.load();
 		
 		// Set up the window
 		setupWindow();
@@ -224,6 +227,9 @@ public class MainFrame extends JFrame{
 	 * Toggles between the game panel and the menu panel.
 	 */
 	public void toggleGamePanel(){
+		// Save the game every time we go to or from the game panel
+		Utils.player.save();
+
 		// Show the game panel if it doesn't yet exist
 		if(gamePanel == null){
 			gamePanel = new GamePanel();

@@ -22,6 +22,9 @@ public class Ball extends Entity{
 	// The ball's current move speed
 	private int moveSpeedX = DEFAULT_MOVE_SPEED;
 	private int moveSpeedY = DEFAULT_MOVE_SPEED;
+
+	// The coins the player gets every time they win
+	private static final int COINS_PER_WIN = 1;
 	
 	/**
 	 * Creates a ball at the given position using the default size.
@@ -71,14 +74,17 @@ public class Ball extends Entity{
 			// Play a bounce sound
 			Utils.playAudio(Utils.AUDIO_FOLDER + Ball.BOUNCE_SOUND_FILE);
 		}
-		
-		// TODO Game over
-		// For the time being, just reposition the ball back into the centre of the screen
-		if(x < 0 || x > Utils.mainFrame.gamePanel.getWidth()){
+
+		// When the ball leaves the screen, increase the coins count of either the player or their opponent
+		if(x < 0 || x + width > Utils.mainFrame.gamePanel.getWidth()){
+			// Centre the ball
 			x = Utils.mainFrame.gamePanel.getWidth() / 2;
 			y = Utils.mainFrame.gamePanel.getHeight() / 2;
 			moveSpeedX *= -1;
 			moveSpeedY *= -1;
+
+			// If the ball left the right side of the screen, then increase the player's coin count
+			if(x + width > Utils.mainFrame.gamePanel.getWidth()) Utils.player.increaseCoins(COINS_PER_WIN);
 		}
 	}
 	
